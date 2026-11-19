@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kuesioner Persepsi Mahasiswa Akuntansi terhadap AIRE</title>
+<style>
+:root{--bg:#eef3ef;--card:#fff;--tx:#17251d;--mu:#5d6b62;--ac:#1f7a4d;--ac2:#e3f2ea;--bd:#d9e1db;--er:#c0392b;--sh:0 1px 2px rgba(20,40,30,.06),0 8px 24px rgba(20,40,30,.06);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1512;--card:#1a231f;--tx:#e8efea;--mu:#9aa9a0;--ac:#4cc38a;--ac2:#21402f;--bd:#2f3d35;--er:#ff7b6b;--sh:none}}
+:root[data-theme="dark"]{--bg:#0f1512;--card:#1a231f;--tx:#e8efea;--mu:#9aa9a0;--ac:#4cc38a;--ac2:#21402f;--bd:#2f3d35;--er:#ff7b6b;--sh:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+.st{display:flex;justify-content:space-between;font-size:.82rem;color:var(--mu);font-weight:600;margin:0 2px 6px}
+.bar{height:8px;background:var(--bd);border-radius:99px;overflow:hidden;margin:0 0 18px}
+.bar i{display:block;height:100%;background:var(--ac);width:0;border-radius:99px;transition:width .35s}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:24px;box-shadow:var(--sh)}
+h1{font-size:1.45rem;line-height:1.3;margin:12px 0 10px}
+h2{font-size:1.2rem;margin:0 0 4px;color:var(--ac)}
+p{margin:.6em 0}
+.mu{color:var(--mu);font-size:.92rem}
+.tag{display:inline-block;background:var(--ac2);color:var(--ac);border-radius:99px;padding:3px 12px;font-size:.78rem;font-weight:700}
+label.o{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--bd);border-radius:12px;margin:8px 0;cursor:pointer;transition:.15s}
+label.o:hover{border-color:var(--ac)}
+label.o:has(input:checked){border-color:var(--ac);background:var(--ac2)}
+label.o input{width:18px;height:18px;accent-color:var(--ac);margin:0;flex:none}
+input[type=text],textarea{width:100%;padding:11px 12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;margin-top:8px}
+input[type=text]:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:1px}
+textarea{min-height:92px;resize:vertical}
+.q{padding:16px 0;border-top:1px solid var(--bd)}
+.card>h2+.mu+.q,.card>h2+.q{margin-top:10px}
+.q.bad{outline:2px solid var(--er);outline-offset:4px;border-radius:10px}
+.q b{font-weight:600}
+.sc{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.sc label{position:relative;display:flex;align-items:center;justify-content:center;height:44px;border:1px solid var(--bd);border-radius:12px;cursor:pointer;font-weight:700;transition:.15s}
+.sc label:hover{border-color:var(--ac)}
+.sc label:has(input:checked){background:var(--ac);color:#fff;border-color:var(--ac)}
+.sc input{position:absolute;opacity:0;pointer-events:none}
+.lg{display:flex;justify-content:space-between;font-size:.76rem;color:var(--mu);margin-top:5px}
+.row{display:flex;gap:10px;justify-content:space-between;margin-top:20px;padding-top:18px;border-top:1px solid var(--bd)}
+button{font:inherit;font-weight:700;padding:11px 24px;border-radius:12px;border:1px solid var(--ac);background:var(--ac);color:#fff;cursor:pointer}
+button:hover{filter:brightness(1.08)}
+button.g{background:transparent;color:var(--ac)}
+button.send{padding:13px 30px;font-size:1.05rem}
+button:disabled{opacity:.5}
+ol{padding-left:1.3em}li{margin:.5em 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{border:1px solid var(--bd);padding:7px 9px;text-align:left}
+.sx{overflow-x:auto}
+.er{color:var(--er);font-weight:600}
+.ty{text-align:center;padding:36px 16px}
+.ck{width:68px;height:68px;border-radius:50%;background:var(--ac2);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:700;margin:0 auto 12px}
+@media(max-width:480px){.card{padding:18px}.sc{gap:6px}.row button{padding:11px 16px}}
+</style>
+</head>
+<body>
+<main>
+<div class="st"><span id="st1"></span><span id="st2"></span></div>
+<div class="bar"><i id="pb"></i></div>
+<div id="app"></div>
+</main>
+<script>
+const SK=["Sangat tidak setuju","Tidak setuju","Netral","Setuju","Sangat setuju"];
+const P=[
+["univ","Universitas / perguruan tinggi",null],
+["prodi","Program studi",["S1 Akuntansi","D3/D4 Akuntansi","Profesi Akuntan (PPAk)","S2 Akuntansi","Lainnya"]],
+["angkatan","Angkatan / semester saat ini",null],
+["gender","Jenis kelamin (opsional)",["Laki-laki","Perempuan","Memilih tidak menjawab"],1],
+["matkul","Apakah Anda pernah mengambil mata kuliah atau pelatihan terkait akuntansi lingkungan, akuntansi keberlanjutan, atau ESG?",["Pernah","Belum pernah"]],
+["ai","Apakah Anda pernah menggunakan AI (misalnya ChatGPT, Claude, Gemini, Copilot) untuk tugas akademik?",["Sering","Kadang-kadang","Jarang","Tidak pernah"]],
+["magang","Apakah Anda pernah magang atau bekerja di bidang akuntansi, audit, atau keberlanjutan?",["Ya","Tidak"]],
+["minat","Seberapa tertarik Anda pada topik keberlanjutan? (1 = sangat tidak tertarik, 5 = sangat tertarik)",["1","2","3","4","5"]]
+];
+const S=[
+["Bagian 2. Pemahaman Awal tentang Pelaporan Keberlanjutan",[
+"PM1|Saya memahami apa yang dimaksud dengan laporan keberlanjutan (sustainability report).",
+"PM2|Saya memahami perbedaan indikator fisik lingkungan (misalnya emisi, energi) dan informasi moneter lingkungan (misalnya biaya lingkungan, provisi).",
+"PM3|Saya pernah mendengar tentang standar pengungkapan keberlanjutan IAI (PSPK 1 dan PSPK 2).",
+"PM4|Saya memahami istilah emisi Scope 1, Scope 2, dan Scope 3.",
+"PM5|Saya merasa kurikulum akuntansi di kampus saya sudah cukup membekali pengetahuan tentang akuntansi lingkungan dan keberlanjutan."]],
+["Bagian 3. Persepsi terhadap Masalah Pelaporan Keberlanjutan",[
+"MS1|Jumlah laporan keberlanjutan yang meningkat belum tentu diikuti kualitas informasi yang baik.",
+"MS2|Data lingkungan yang tersebar di banyak unit dan format menyulitkan penyusunan laporan keberlanjutan.",
+"MS3|Data lingkungan perlu dihubungkan dengan sistem akuntansi agar dapat direkonsiliasi seperti angka keuangan.",
+"MS4|Angka dalam laporan keberlanjutan perlu memiliki jejak audit yang jelas.",
+"MS5|Akuntan seharusnya terlibat dalam menjaga kualitas informasi lingkungan, tidak hanya informasi keuangan.",
+"MS6|Penerapan PSPK 1 dan PSPK 2 pada 2027 akan meningkatkan kebutuhan perusahaan akan sistem pengelolaan data lingkungan."]],
+["Bagian 4A. Persepsi terhadap AIRE: Manfaat yang Dirasakan",[
+"PU1|AIRE dapat mempercepat proses pengumpulan dan rekonsiliasi data lingkungan.",
+"PU2|AIRE dapat meningkatkan akurasi angka emisi dan indikator lingkungan yang dilaporkan.",
+"PU3|Fitur penandaan anomali (flag) oleh AI membantu akuntan menemukan kesalahan data lebih awal.",
+"PU4|Penghitungan biaya lingkungan dan provisi dalam AIRE membantu menghubungkan data operasional dengan akuntansi keuangan.",
+"PU5|AIRE dapat membantu perusahaan menyiapkan pengungkapan sesuai PSPK 1 dan PSPK 2.",
+"PU6|Secara keseluruhan, AIRE bermanfaat bagi pekerjaan akuntan di bidang pelaporan keberlanjutan."]],
+["Bagian 4B. Persepsi terhadap AIRE: Kemudahan yang Dirasakan",[
+"PE1|Alur lima tahap AIRE mudah saya pahami.",
+"PE2|Menurut saya, akuntan dapat mempelajari penggunaan platform seperti AIRE dengan cukup mudah.",
+"PE3|Menempatkan AIRE di atas AIS/ERP yang sudah ada (tanpa menggantikannya) membuat penerapannya lebih realistis.",
+"PE4|Fitur Traceability Trail dan Data Quality Score mudah dipahami oleh pengguna non-teknis."]],
+["Bagian 4C. Persepsi terhadap AIRE: Keterlacakan dan Kepercayaan",[
+"TR1|Kemampuan menelusuri setiap angka laporan ke sumber datanya meningkatkan kepercayaan saya pada laporan keberlanjutan.",
+"TR2|Pencatatan hasil verifikasi manusia sebagai bagian dari jejak audit meningkatkan kredibilitas informasi.",
+"TR3|Data Quality Score berguna sebagai ringkasan kualitas data, selama transparan dan bukan satu-satunya dasar penilaian.",
+"TR4|Laporan yang dihasilkan melalui proses terverifikasi seperti AIRE lebih layak dipercaya dibandingkan laporan yang disusun manual tanpa rekonsiliasi."]],
+["Bagian 5. Persepsi terhadap Integritas dan Risiko Penggunaan AI",[
+"IN1|Prinsip “AI-assisted, human-verified” (keputusan akhir tetap di tangan manusia) penting untuk dipertahankan dalam pelaporan keberlanjutan.",
+"IN2|Saya khawatir hasil klasifikasi AI dapat keliru atau sulit dijelaskan.",
+"IN3|Saya khawatir AI hanya merapikan data tanpa menjamin data sumbernya benar.",
+"IN4|Otomatisasi berpotensi menimbulkan kesan kredibel yang semu (greenwashing berbasis teknologi).",
+"IN5|Assurance independen tetap diperlukan meskipun perusahaan sudah memakai platform seperti AIRE.",
+"IN6|Keamanan data dan pembatasan hak akses perlu menjadi bagian dari rancangan platform seperti AIRE.",
+"IN7|AIRE tidak menggantikan akuntan, melainkan memperkuat peran akuntan sebagai penjaga integritas informasi."]],
+["Bagian 6. Kesiapan Kompetensi dan Minat",[
+"KS1|Saya merasa perlu meningkatkan literasi data dan AI untuk menunjang karier sebagai akuntan.",
+"KS2|Saya merasa kompetensi saya saat ini sudah cukup untuk bekerja dengan sistem berbasis AI di bidang akuntansi.",
+"KS3|Perguruan tinggi perlu menambahkan materi akuntansi lingkungan, ESG, dan AI untuk keberlanjutan dalam kurikulum.",
+"NI1|Saya bersedia mempelajari alat seperti AIRE jika di masa depan perusahaan tempat saya bekerja menggunakannya.",
+"NI2|Saya tertarik mengembangkan karier di bidang pelaporan keberlanjutan atau akuntansi lingkungan.",
+"NI3|Saya akan merekomendasikan penerapan konsep seperti AIRE kepada perusahaan tempat saya magang atau bekerja."]]
+].map(s=>[s[0],s[1].map(x=>x.split("|"))]);
+const O=["Menurut Anda, hambatan terbesar penerapan sistem seperti AIRE di perusahaan Indonesia adalah:","Fitur atau tahapan apa pada AIRE yang menurut Anda paling bermanfaat? Mengapa?","Apa yang perlu ditambahkan atau diperbaiki pada konsep AIRE?","Kompetensi apa yang menurut Anda paling perlu dikuasai mahasiswa akuntansi untuk menghadapi pelaporan keberlanjutan berbasis AI?"];
+const N=S.length+4; // 0 intro,1 profil,2 AIRE,3..S,terbuka
+let pg=0,A={},owner=false;
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nav=(back,next)=>`<div class="row">${back?'<button class="g" data-a="back">Kembali</button>':'<span></span>'}<button data-a="next">${next}</button></div>`;
+function opts(k,o){return o.map(v=>`<label class="o"><input type="radio" name="${k}" value="${esc(v)}" ${A[k]===v?"checked":""}>${esc(v)}</label>`).join("")}
+function render(){
+ $("pb").style.width=Math.round((pg+1)/N*100)+"%";$("st1").textContent=pg===0?"Pengantar":"Langkah "+pg+" dari "+(N-1);$("st2").textContent=Math.round((pg+1)/N*100)+"%";
+ let h="";
+ if(pg===0){
+  h=`<div class="card"><span class="tag">Lomba Essay INESCO ACC of UMP 2026</span><h1>Kuesioner Persepsi Mahasiswa Akuntansi terhadap AIRE (AI-Integrated Environmental Reporting Engine)</h1>
+  <p class="mu">Kuesioner ini mendukung esai “AIRE: AI-Integrated Environmental Reporting Engine sebagai Inovasi Environmental Accounting untuk Memperkuat Sustainability Reporting di Indonesia”.</p>
+  <p>Mohon luangkan sekitar 8–10 menit. Tidak ada jawaban benar atau salah; isilah sesuai pendapat dan pengalaman Anda. Jawaban bersifat anonim, hanya untuk keperluan akademik, dan dilaporkan secara agregat. Keikutsertaan bersifat sukarela dan Anda boleh berhenti kapan saja.</p>
+  <label class="o"><input type="checkbox" id="cs" ${A.cs?"checked":""}> Saya telah membaca penjelasan di atas dan bersedia menjadi responden.</label>
+  <div id="e0"></div><div class="row"><span></span><button data-a="next">Mulai</button></div>
+  </div>`;
+ }else if(pg===1){
+  h=`<div class="card"><h2>Bagian 1. Profil Responden</h2>`+P.map(p=>`<div class="q" data-k="${p[0]}"><b>${esc(p[1])}${p[3]?"":" *"}</b>${p[2]?opts(p[0],p[2]):`<input type="text" data-t="${p[0]}" value="${esc(A[p[0]]||"")}">`}</div>`).join("")+nav(1,"Lanjut")+"</div>";
+ }else if(pg===2){
+  h=`<div class="card"><h2>Penjelasan Singkat tentang AIRE</h2><p class="mu">Mohon baca sebelum mengisi bagian berikutnya.</p>
+  <p>Banyak perusahaan di Indonesia sudah menerbitkan laporan keberlanjutan, tetapi kualitas informasi lingkungan di dalamnya belum merata. Salah satu penyebabnya adalah <b>rantai informasi yang terputus</b>: data lingkungan (listrik, bahan bakar, air, limbah) tersebar di berbagai unit dan jarang dihubungkan dengan sistem akuntansi, sehingga sulit direkonsiliasi dan ditelusuri.</p>
+  <p><b>AIRE</b> adalah gagasan platform dengan prinsip <i>“AI-assisted, human-verified”</i> yang bekerja dalam lima tahap:</p>
+  <ol><li><b>Environmental Data Input</b>: mengumpulkan data lingkungan dari AIS/ERP, sistem produksi, dan catatan utilitas.</li>
+  <li><b>AI-Assisted Data Integration</b>: AI mengklasifikasikan dan menyatukan data, serta menandai (flag) data yang tidak lengkap, ganda, atau janggal.</li>
+  <li><b>Environmental Accounting &amp; Measurement</b>: data diterjemahkan menjadi indikator fisik (misalnya emisi Scope 1 dan 2) dan informasi moneter (misalnya biaya lingkungan dan provisi).</li>
+  <li><b>Human Verification &amp; Validation</b>: akuntan, sustainability officer, dan auditor internal memeriksa hasil AI dan mengambil keputusan akhir.</li>
+  <li><b>Sustainability Reporting Output</b>: angka laporan disajikan dengan jejak audit (traceability) ke sumber datanya.</li></ol>
+  <p class="mu"><b>Contoh:</b> AIRE menemukan selisih konsumsi listrik 15% antara catatan utilitas (1.200.000 kWh) dan AIS (1.020.000 kWh) karena tagihan satu pabrik belum diinput. Setelah dikoreksi, total emisi yang dilaporkan naik sekitar 12%. Angka ini hanya ilustrasi hipotetis.</p>${nav(1,"Lanjut")}</div>`;
+ }else if(pg<N-1){
+  const s=S[pg-3];
+  h=`<div class="card"><h2>${esc(s[0])}</h2><p class="mu">Pilih satu angka pada setiap pernyataan: 1 = Sangat Tidak Setuju, 5 = Sangat Setuju.</p>`+
+  s[1].map(([c,t])=>`<div class="q" data-k="${c}"><b>${c}.</b> ${esc(t)}<div class="sc">${[1,2,3,4,5].map(n=>`<label><input type="radio" name="${c}" value="${n}" ${A[c]==n?"checked":""}>${n}</label>`).join("")}</div><div class="lg"><span>${SK[0]}</span><span>${SK[4]}</span></div></div>`).join("")+nav(1,"Lanjut")+"</div>";
+ }else if(pg===N-1){
+  h=`<div class="card"><h2>Bagian 7. Pertanyaan Terbuka</h2><p class="mu">Boleh dikosongkan jika tidak ada masukan.</p>`+O.map((q,i)=>`<div class="q"><b>${i+1}. ${esc(q)}</b><textarea data-t="o${i}">${esc(A["o"+i]||"")}</textarea></div>`).join("")+nav(1,"Kirim jawaban").replace("<button data-a=\"next\">","<button class=\"send\" data-a=\"next\">")+"</div>";
+ }
+ $("app").innerHTML=h;scrollTo(0,0);
+}
+function valid(){
+ let bad=null;
+ if(pg===0){if(!A.cs){$("e0").innerHTML='<p class="er">Centang persetujuan untuk melanjutkan.</p>';return false}return true}
+ const keys=pg===1?P.filter(p=>!p[3]).map(p=>p[0]):pg>=3&&pg<N-1?S[pg-3][1].map(x=>x[0]):[];
+ document.querySelectorAll(".q").forEach(e=>e.classList.remove("bad"));
+ keys.forEach(k=>{if(!A[k]||!String(A[k]).trim()){const e=document.querySelector(`[data-k="${k}"]`);if(e){e.classList.add("bad");bad=bad||e}}});
+ if(bad){bad.scrollIntoView({behavior:"smooth",block:"center"});return false}
+ return true;
+}
+function csv(rows){const ks=[...P.map(p=>p[0]),...S.flatMap(s=>s[1].map(x=>x[0])),"o0","o1","o2","o3"];
+ const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
+ return "\ufeff"+["waktu",...ks].map(q).join(",")+"\n"+rows.map(r=>[r.t,...ks.map(k=>r[k])].map(q).join(",")).join("\n");}
+function save(name,data){const u=URL.createObjectURL(new Blob([data],{type:"text/csv;charset=utf-8"})),l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+const URL_SHEET="https://script.google.com/macros/s/AKfycbxJK0ZmJ_f7CrTsFqp_li4LLOdobMXmaigmGPDkG6_HqbjAwa-C4qdD0uuo2ghM-MFMJA/exec";
+async function kirim(){
+ const rec={t:new Date().toISOString(),...A};delete rec.cs;
+ $("app").innerHTML='<div class="card ty"><p>Mengirim jawaban…</p></div>';$("pb").style.width="100%";$("st1").textContent="Selesai";$("st2").textContent="100%";
+ let ok=false;
+ try{const r=await fetch(URL_SHEET,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(rec)});const j=await r.json();ok=j&&j.ok===true}catch(e){}
+ if(ok){$("app").innerHTML='<div class="card ty"><div class="ck">✓</div><h1>Terima kasih!</h1><p>Jawaban Anda sudah kami terima. Terima kasih banyak atas waktu dan partisipasi Anda dalam kuesioner ini.</p></div>';return}
+ $("app").innerHTML='<div class="card ty"><h1>Jawaban belum terkirim</h1><p>Koneksi bermasalah. Jawaban Anda masih aman di halaman ini; silakan coba kirim lagi.</p><p><button class="send" id="rt">Coba kirim lagi</button></p><p><button class="g" id="dl">Unduh salinan jawaban (CSV)</button></p></div>';
+ $("rt").onclick=()=>kirim();$("dl").onclick=()=>save("jawaban_kuesioner_AIRE.csv",csv([rec]));
+}
+document.addEventListener("click",e=>{const a=e.target.dataset.a;if(!a)return;
+ if(a==="back"){pg--;render()}
+ else if(a==="next"){if(!valid())return;if(pg===N-1)kirim();else{pg++;render()}}
+});
+document.addEventListener("change",e=>{const t=e.target;if(t.id==="cs")A.cs=t.checked;else if(t.type==="radio"){A[t.name]=t.value;t.closest(".q")?.classList.remove("bad")}});
+document.addEventListener("input",e=>{const k=e.target.dataset.t;if(k)A[k]=e.target.value});
+render();
+</script>
+</body>
+</html>
